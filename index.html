@@ -36,19 +36,61 @@
 
     <!-- Navigation -->
     <div class="content">
-        <!-- Home Page -->
         <div id="home" class="page active">
-            <div class="home-page">
-                <h1>
-        Fly High, Luna!!
-        <span></span><span></span><span></span><span></span><span></span><span></span>  <!-- For corner decorations -->
-    </h1>
-                <div class="button-container">
-                    <button class="nav-button" onclick="showPage('letter')"><i class="fas fa-scroll"></i> The Letter </button>
-                    <button class="nav-button" onclick="showPage('gallery')"><i class="fas fa-images"></i> Memories </button>
-                </div>
+    <div class="home-page">
+        <!-- Enhanced Title Section -->
+        <div class="memorial-header">
+            <h1>Fly High, Luna!!</h1>
+            <div class="subtitle">🤍إلى الأبد في قلوبنا🤍</div>
+        </div>
+
+        <!-- Memorial Candle -->
+        <div class="interactive-candle">
+            <div class="candle-flame"></div>
+            <div class="candle-wax"></div>
+            <div class="candle-base"></div>
+            <div class="candle-message">Light a candle for Luna</div>
+        </div>
+
+        <!-- Memory Metrics -->
+        <div class="memory-stats">
+            <div class="stat-box">
+                <i class="fas fa-paw"></i>
+                <span class="count">15</span>
+                <span class="label"> Memories</span>
+            </div>
+            <div class="stat-box">
+                <i class="fas fa-heart"></i>
+                <span class="count">∞</span>
+                <span class="label">Love Remaining</span>
             </div>
         </div>
+
+        <!-- Main Buttons -->
+        <div class="button-container">
+            <button class="nav-button" onclick="showPage('letter')">
+                <i class="fas fa-scroll"></i> The Letter
+                <span class="button-hint">الرسالة</span>
+            </button>
+            <button class="nav-button" onclick="showPage('gallery')">
+                <i class="fas fa-images"></i> Memories
+                <span class="button-hint">ذكريات</span>
+            </button>
+        </div>
+
+        <!-- New Memory Wall Section -->
+        <div class="memory-wall-preview">
+            <h3>Luna's Legacy</h3>
+            <div class="preview-images">
+                <div class="preview-item" style="background-image: url('luna1.jpg')"></div>
+                <div class="preview-item" style="background-image: url('luna2.jpg')"></div>
+                <div class="preview-item" style="background-image: url('luna3.jpg')"></div>
+                <div class="preview-item more-items">+12</div>
+            </div>
+        </div>
+    </div>
+</div>
+
 
       <div id="letter" class="page">
     <div class="letter-page">
@@ -410,7 +452,37 @@ document.addEventListener('click', () => {
     // Set up both click and touch listeners for mobile
     document.body.addEventListener('click', handleFirstInteraction, { once: true });
     document.body.addEventListener('touchstart', handleFirstInteraction, { once: true });
+ // Interactive Candle Animation
+    document.querySelector('.interactive-candle').addEventListener('click', function() {
+        this.classList.toggle('candle-lit');
+        
+        // Create floating heart animation
+        if (this.classList.contains('candle-lit')) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤';
+            heart.style.position = 'absolute';
+            heart.style.top = '0';
+            heart.style.left = '50%';
+            heart.style.transform = 'translateX(-50%)';
+            heart.style.fontSize = '1.5rem';
+            heart.style.animation = 'floatUp 3s ease-out forwards';
+            this.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+    });
 
+    // Animation for floating heart
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes floatUp {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
     </script>
 </body>
 </html>
