@@ -970,6 +970,17 @@ I will miss you a lot Luna. I will miss everything of you. I will miss your stor
         window.onload = () => {
             backgroundSong.play();
         };
+        function handleFirstInteraction() {
+        backgroundSong.muted = false;
+        backgroundSong.play().catch(e => console.log("Auto-play prevented:", e));
+        document.body.removeEventListener('click', handleFirstInteraction);
+        document.body.removeEventListener('touchstart', handleFirstInteraction);
+    }
+
+    // Set up both click and touch listeners for mobile
+    document.body.addEventListener('click', handleFirstInteraction, { once: true });
+    document.body.addEventListener('touchstart', handleFirstInteraction, { once: true });
+
     </script>
 </body>
 </html>
