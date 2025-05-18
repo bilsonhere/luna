@@ -273,48 +273,117 @@
                 opacity: 0;
             }
         }
+.letter-body {
+        text-align: left;
 
+    }
+
+    .letter-content p {
+    text-indent: 0 !important;
+    margin-left: 0 !important;
+    padding-left: 0 !important;
+}
+
+    .letter-closing {
+        margin-top: 3rem;
+    }
         /* Letter Page */
-        .letter-page {
-            max-width: 800px;
-            margin: 4rem auto;
-            padding: 3rem;
-            background-color: rgba(44, 62, 80, 0.9);
-            border-radius: 10px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
-            animation: fadeIn 1s ease-in-out;
-            position: relative;
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
+          .letter-page {
+        max-width: 800px;
+        margin: 4rem auto;
+        padding: 3rem 4rem;
+        background: #f8f1e0 url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" width="100" height="100" viewBox="0 0 100 100"><path fill="%23e8d9b5" d="M0 0h100v100H0z"/><path fill="none" stroke="%23d4c9a8" stroke-width="0.5" d="M0 20h100M0 40h100M0 60h100M0 80h100M20 0v100M40 0v100M60 0v100M80 0v100"/></svg>');
+        border-radius: 0;
+        box-shadow: 
+            0 0 10px rgba(0,0,0,0.3),
+            0 0 100px rgba(235,195,120,0.4) inset;
+        border: 1px solid #d4b483;
+        font-family: 'IM Fell English SC', serif;
+        position: relative;
+        color: #3a3226;
+        line-height: 1.8;
+        text-align: justify;
+        border-left: 15px solid #8b5a2b;
+        transform: rotate(0.5deg);
+    }
 
-        .letter-page::before {
-            content: "";
-            position: absolute;
-            top: 10px;
-            left: 10px;
-            right: 10px;
-            bottom: 10px;
-            border: 1px solid rgba(255, 255, 255, 0.05);
-            border-radius: 5px;
-            pointer-events: none;
-        }
+    .letter-page::before {
+        content: "";
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        right: 10px;
+        bottom: 10px;
+        border: 1px solid rgba(139,90,43,0.3);
+        pointer-events: none;
+    }
 
-        .letter-content {
-            white-space: pre-line;
-            font-family: 'Cormorant Garamond', serif;
-            font-size: 1.1rem;
-            line-height: 1.8;
-            padding: 1rem;
-            position: relative;
-        }
+    .letter-page::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 15px;
+        background: linear-gradient(to bottom, rgba(0,0,0,0.1) 0%, rgba(0,0,0,0) 100%);
+    }
 
-        .letter-content::first-letter {
-            font-size: 3rem;
-            float: left;
-            line-height: 1;
-            margin-right: 10px;
-            color: var(--light-text);
-        }
+    .letter-content {
+        position: relative;
+        z-index: 1;
+    }
+
+    .letter-content::first-letter {
+        font-size: 3.5rem;
+        float: left;
+        line-height: 0.8;
+        margin-right: 10px;
+        margin-top: 5px;
+        color: #8b5a2b;
+        font-weight: bold;
+    }
+
+    .letter-content p {
+        margin-bottom: 1.5rem;
+        text-indent: 1.5em;
+    }
+
+    .letter-date {
+        text-align: right;
+        font-style: italic;
+        margin-top: 2rem;
+        color: #6d4c2b;
+        font-size: 1rem;
+        border-top: 1px solid #d4b483;
+        padding-top: 1rem;
+    }
+
+    /* Wax Seal Effect */
+    .wax-seal {
+        position: absolute;
+        bottom: -30px;
+        right: 50px;
+        width: 60px;
+        height: 60px;
+        background: #a52a2a;
+        border-radius: 50%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: white;
+        font-size: 1.5rem;
+        box-shadow: 
+            0 0 10px rgba(0,0,0,0.3),
+            0 0 0 5px rgba(165,42,42,0.2);
+        transform: rotate(15deg);
+        z-index: 2;
+    }
+
+    /* Aged Paper Texture */
+    @keyframes paper-age {
+        0% { background-position: 0 0; }
+        100% { background-position: 100px 100px; }
+    }
 
         .back-button {
             display: block;
