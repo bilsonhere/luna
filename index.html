@@ -701,7 +701,7 @@
     </style>
 </head>
 <body>
-     <audio id="backgroundSong" loop>
+     <audio id="backgroundSong" loop muted>
         <source src="goodbye.mp3"audio/mpeg">
         Your browser does not support the audio element.
     </audio>
@@ -1074,6 +1074,11 @@ function updateLightbox() {
         document.body.removeEventListener('click', handleFirstInteraction);
         document.body.removeEventListener('touchstart', handleFirstInteraction);
     }
+document.addEventListener('click', () => {
+  const audio = document.getElementById('backgroundSong');
+  audio.muted = false;
+  audio.play();
+});
 
     // Set up both click and touch listeners for mobile
     document.body.addEventListener('click', handleFirstInteraction, { once: true });
