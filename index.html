@@ -254,6 +254,7 @@
                     <div class="memory-date">NA</div>
                 </div>
             </div> 
+            
            
         </div>
         <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back Home</button>
@@ -423,9 +424,16 @@ function updateLightbox() {
             }
         });
 
-        document.querySelectorAll('.gallery-item').forEach((item, index) => {
-            item.addEventListener('click', () => openLightbox(index));
-        });
+       function bindGalleryItems() {
+    const items = document.querySelectorAll('.gallery-item img, .gallery-item video');
+    galleryItems.length = 0; // clear existing
+    items.forEach(item => galleryItems.push(item));
+
+    document.querySelectorAll('.gallery-item').forEach((item, index) => {
+        item.onclick = () => openLightbox(index);
+    });
+}
+
          const backgroundSong = document.getElementById('backgroundSong');
 
         // songplayer
@@ -477,6 +485,22 @@ document.addEventListener('click', () => {
         }
     `;
     document.head.appendChild(style);
+
+    function updateMemoryCounter() {
+    const memoryItems = document.querySelectorAll('.gallery-item');
+    const memoryCount = memoryItems.length;
+
+    const counterEl = document.querySelector('.memory-stats .count');
+    counterEl.textContent = memoryCount;
+}
+
+// Ensure the counter updates once DOM is ready
+window.addEventListener('DOMContentLoaded', () => {
+    showPage('home');
+    updateMemoryCounter();
+    bindGalleryItems();
+});
+
     </script>
 </body>
 </html>
