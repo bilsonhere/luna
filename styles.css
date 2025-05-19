@@ -412,7 +412,7 @@
             left: 100%;
         }
 
-        /* Petal Animation */
+        
         .petal {
             position: absolute;
             background-color: var(--petal-color);
@@ -454,7 +454,8 @@
     .letter-closing {
         margin-top: 3rem;
     }
-        /* Letter Page */
+          
+           /* letter workaround:: GPT */ 
           .letter-page {
         max-width: 800px;
         margin: 4rem auto;
@@ -525,28 +526,8 @@
         padding-top: 1rem;
     }
 
-    /* Wax Seal Effect */
-    .wax-seal {
-        position: absolute;
-        bottom: -30px;
-        right: 50px;
-        width: 60px;
-        height: 60px;
-        background: #a52a2a;
-        border-radius: 50%;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        color: white;
-        font-size: 1.5rem;
-        box-shadow: 
-            0 0 10px rgba(0,0,0,0.3),
-            0 0 0 5px rgba(165,42,42,0.2);
-        transform: rotate(15deg);
-        z-index: 2;
-    }
+   
 
-    /* Aged Paper Texture */
     @keyframes paper-age {
         0% { background-position: 0 0; }
         100% { background-position: 100px 100px; }
@@ -677,7 +658,7 @@
             border-color: rgba(255, 255, 255, 0.5);
         }
 
-        /* Candle Animation */
+        /* candil */
         .candle-container {
             position: fixed;
             bottom: 20px;
@@ -717,7 +698,7 @@
             75% { transform: translateX(-50%) scale(0.95); opacity: 0.95; }
         }
 
-        /* Page Transitions */
+        /* tranzition */
         .page {
             display: none;
             width: 100%;
@@ -728,7 +709,7 @@
             display: block;
         }
 
-        /* Responsive Adjustments */
+        /* responsive bullshit */
         @media (max-width: 768px) {
             h1 {
                 font-size: 2.5rem;
@@ -782,7 +763,7 @@
             }
         }
 
-        /* Footer */
+        
         footer {
             text-align: center;
             padding: 1.5rem;
@@ -802,7 +783,7 @@
             height: 1px;
             background: linear-gradient(to right, transparent, rgba(255, 255, 255, 0.3), transparent);
         }
-        /* Lightbox Modal */
+        /* lightbox idk wtf  */
         .lightbox {
             display: none;
             position: fixed;
@@ -894,29 +875,8 @@
             font-size: 1rem;
         }
 
-        /* Gallery item cursor */
+        
         .gallery-item {
             cursor: pointer;
         }
-         #muteButton {
-           position:fixed;
-            top: 500px;
-            left: 20px;
-            background: rgba(255, 255, 255, 0.8);
-            border: 2px solid #ff6f61;
-            border-radius: 50%;
-            width: 40px;
-            height: 40px;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            font-size: 20px;
-            color: #ff6f61;
-            transition: background 0.3s ease, transform 0.3s ease;
-        }
-
-        #muteButton:hover {
-            background: rgba(255, 111, 97, 0.8);
-            transform: scale(1.1);
-        }
+         
