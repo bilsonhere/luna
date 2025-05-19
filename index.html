@@ -44,7 +44,7 @@
             <div class="subtitle">🤍إلى الأبد في قلوبنا🤍</div>
         </div>
 
-        <!-- Memorial Candle -->
+        <!-- lighting candle shi -->
         <div class="interactive-candle">
             <div class="candle-flame"></div>
             <div class="candle-wax"></div>
@@ -52,11 +52,11 @@
             <div class="candle-message">Light a candle for Luna</div>
         </div>
 
-        <!-- Memory Metrics -->
+        <!-- counterzzz -->
         <div class="memory-stats">
             <div class="stat-box">
                 <i class="fas fa-paw"></i>
-                <span class="count">15</span>
+                <span class="count">16</span>
                 <span class="label"> Memories</span>
             </div>
             <div class="stat-box">
@@ -78,14 +78,14 @@
             </button>
         </div>
 
-        <!-- New Memory Wall Section -->
+        <!-- preview sec -->
         <div class="memory-wall-preview">
             <h3>More than just a cat</h3>
             <div class="preview-images">
                 <div class="preview-item" style="background-image: url('luna1.jpg')"></div>
                 <div class="preview-item" style="background-image: url('luna2.jpg')"></div>
                 <div class="preview-item" style="background-image: url('luna3.jpg')"></div>
-                <div class="preview-item more-items">+12</div>
+                <div class="preview-item more-items">+13</div>
             </div>
         </div>
     </div>
@@ -248,17 +248,23 @@
                     <div class="memory-date">April 11, 2025</div>
                 </div>
             </div> 
-            <!-- Add more items as needed following the same pattern -->
+            <div class="gallery-item" onclick="openLightbox(12)">
+                <div class="memory-container">
+                    <img src="luna16.jpg" alt="Memory 13">
+                    <div class="memory-date">NA</div>
+                </div>
+            </div> 
+           
         </div>
         <button class="back-button" onclick="showPage('home')"><i class="fas fa-arrow-left"></i> Back Home</button>
     </div>
 </div>
-    <!-- Lightbox Modal -->
+    <!-- gallery optimizations -->
     <div id="lightbox" class="lightbox">
         <span class="lightbox-close" onclick="closeLightbox()">&times;</span>
         <span class="lightbox-nav lightbox-prev" onclick="changeSlide(-1)">&#10094;</span>
         <div class="lightbox-content">
-            <!-- Content will be inserted here by JavaScript -->
+           
         </div>
         <span class="lightbox-nav lightbox-next" onclick="changeSlide(1)">&#10095;</span>
         <div class="lightbox-caption"></div>
@@ -270,37 +276,28 @@
     </footer>
 
     <script>
-        // Simple page navigation
+      
         function showPage(pageId) {
-            // Hide all pages
+           
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
             
-            // Show selected page
+           
             document.getElementById(pageId).classList.add('active');
             
-            // Scroll to top
+         
             window.scrollTo(0, 0);
         }
 
-        // Make sure home page is always shown on load
+        // always laod
         window.addEventListener('load', function() {
             showPage('home');
-            document.getElementById('current-year').textContent = new Date().getFullYear();
+            
         });
- function toggleMute() {
-            const muteButton = document.getElementById('muteButton');
-            if (backgroundSong.muted) {
-                backgroundSong.muted = false;
-                muteButton.textContent = "🎵";
-            } else {
-                backgroundSong.muted = true;
-                muteButton.textContent = "🔇";
-            }
-        }
 
-        // Create falling petals
+
+        // flowers/petals workaround ;; thanks my g @krish
         function createPetals() {
             const container = document.getElementById('petals-container');
             const petalCount = 15;
@@ -310,27 +307,26 @@
                     const petal = document.createElement('div');
                     petal.classList.add('petal');
                     
-                    // Random size
+                 
                     const size = Math.random() * 15 + 5;
                     petal.style.width = `${size}px`;
                     petal.style.height = `${size}px`;
                     
-                    // Random position
+                 
                     petal.style.left = `${Math.random() * 100}vw`;
                     
-                    // Random animation duration
+                   
                     const duration = Math.random() * 10 + 10;
                     petal.style.animationDuration = `${duration}s`;
-                    
-                    // Random delay
+                
                     petal.style.animationDelay = `${Math.random() * 10}s`;
                     
-                    // Random opacity
+                    
                     petal.style.opacity = Math.random() * 0.5 + 0.1;
                     
                     container.appendChild(petal);
                     
-                    // Remove petal after animation completes to prevent DOM overload
+                  
                     setTimeout(() => {
                         petal.remove();
                     }, duration * 1000);
@@ -338,11 +334,11 @@
             }
         }
 
-        // Initialize petals and keep recreating them
+       
         createPetals();
         setInterval(createPetals, 15000);
 
-        // Add subtle background parallax effect
+        // parallax
         window.addEventListener('mousemove', function(e) {
             const x = e.clientX / window.innerWidth;
             const y = e.clientY / window.innerHeight;
@@ -359,18 +355,18 @@
             currentSlideIndex = index;
             updateLightbox();
             lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; // Prevent scrolling
+            document.body.style.overflow = 'hidden'; 
         }
 
         function closeLightbox() {
             lightbox.classList.remove('active');
-            document.body.style.overflow = ''; // Restore scrolling
+            document.body.style.overflow = ''; 
         }
-
+// gallery optmistiz
         function changeSlide(direction) {
             currentSlideIndex += direction;
             
-            // Wrap around if at beginning or end
+           
             if (currentSlideIndex >= galleryItems.length) {
                 currentSlideIndex = 0;
             } else if (currentSlideIndex < 0) {
@@ -385,9 +381,9 @@ function updateLightbox() {
     const dateElement = item.closest('.memory-container').querySelector('.memory-date');
     const dateText = dateElement ? dateElement.textContent : '';
     
-    // Clear previous content
-    lightboxContent.innerHTML = '';
     
+    lightboxContent.innerHTML = '';
+    // for video
     if (isVideo) {
         const video = document.createElement('video');
         video.controls = true;
@@ -407,14 +403,14 @@ function updateLightbox() {
     }
 }
 
-        // Close lightbox when clicking outside content
+        
         lightbox.addEventListener('click', function(e) {
             if (e.target === lightbox) {
                 closeLightbox();
             }
         });
 
-        // Keyboard navigation
+       
         document.addEventListener('keydown', function(e) {
             if (lightbox.classList.contains('active')) {
                 if (e.key === 'Escape') {
@@ -427,7 +423,6 @@ function updateLightbox() {
             }
         });
 
-        // Initialize gallery items with click handlers
         document.querySelectorAll('.gallery-item').forEach((item, index) => {
             item.addEventListener('click', () => openLightbox(index));
         });
@@ -449,14 +444,14 @@ document.addEventListener('click', () => {
   audio.play();
 });
 
-    // Set up both click and touch listeners for mobile
+    // mobile responsiveness
     document.body.addEventListener('click', handleFirstInteraction, { once: true });
     document.body.addEventListener('touchstart', handleFirstInteraction, { once: true });
- // Interactive Candle Animation
+ // candle 
     document.querySelector('.interactive-candle').addEventListener('click', function() {
         this.classList.toggle('candle-lit');
         
-        // Create floating heart animation
+        // heart anim
         if (this.classList.contains('candle-lit')) {
             const heart = document.createElement('div');
             heart.innerHTML = '❤';
@@ -474,7 +469,6 @@ document.addEventListener('click', () => {
         }
     });
 
-    // Animation for floating heart
     const style = document.createElement('style');
     style.innerHTML = `
         @keyframes floatUp {
