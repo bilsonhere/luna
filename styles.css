@@ -906,3 +906,48 @@
     border-radius: 10px;
     background-color: rgba(0, 0, 0, 0.6);
 }
+.memory-journey {
+    margin-top: 1rem;
+    font-size: 0.8rem;
+    color: rgba(255,255,255,0.7);
+}
+
+.journey-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 0.5rem;
+    border-radius: 3px;
+}
+
+.journey-bar div {
+    height: 100%;
+    background: var(--accent-color);
+    border-radius: 3px;
+    transition: width 0.5s ease;
+}
+/* Ensure lightbox arrows are clickable */
+.lightbox-nav {
+    z-index: 1001;
+    pointer-events: all;
+}
+
+/* :)) */
+.memory-journey {
+    margin-top: 10px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+}
+
+.journey-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.2);
+    margin-top: 5px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.journey-bar div {
+    height: 100%;
+    background: var(--accent-color);
+    transition: width 0.3s ease;
+}
