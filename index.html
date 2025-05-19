@@ -278,229 +278,99 @@
 
     <script>
       
+          let galleryElements = [];
+        let currentMedia = null;
+        let currentIndex = -1;
+
         function showPage(pageId) {
-           
             document.querySelectorAll('.page').forEach(page => {
                 page.classList.remove('active');
             });
-            
-           
             document.getElementById(pageId).classList.add('active');
-            
-         
             window.scrollTo(0, 0);
         }
 
-        // always laod
-        window.addEventListener('load', function() {
-            showPage('home');
-            
-        });
-
-
-        // flowers/petals workaround ;; thanks my g @krish
-        function createPetals() {
-            const container = document.getElementById('petals-container');
-            const petalCount = 15;
-            
-            for (let i = 0; i < petalCount; i++) {
-                setTimeout(() => {
-                    const petal = document.createElement('div');
-                    petal.classList.add('petal');
-                    
-                 
-                    const size = Math.random() * 15 + 5;
-                    petal.style.width = `${size}px`;
-                    petal.style.height = `${size}px`;
-                    
-                 
-                    petal.style.left = `${Math.random() * 100}vw`;
-                    
-                   
-                    const duration = Math.random() * 10 + 10;
-                    petal.style.animationDuration = `${duration}s`;
-                
-                    petal.style.animationDelay = `${Math.random() * 10}s`;
-                    
-                    
-                    petal.style.opacity = Math.random() * 0.5 + 0.1;
-                    
-                    container.appendChild(petal);
-                    
-                  
-                    setTimeout(() => {
-                        petal.remove();
-                    }, duration * 1000);
-                }, i * 1000);
-            }
+        function updateMemoryCounter() {
+            const memoryItems = document.querySelectorAll('.gallery-item');
+            document.querySelector('.memory-stats .count').textContent = memoryItems.length;
         }
 
-       
-        createPetals();
-        setInterval(createPetals, 15000);
+        function bindGalleryItems() {
+            galleryElements = [];
+            document.querySelectorAll('.gallery-item').forEach(item => {
+                const mediaEl = item.querySelector('img, video');
+                galleryElements.push(mediaEl);
+                item.onclick = () => openLightboxFromElement(mediaEl);
+            });
+        }
 
-        // parallax
-        window.addEventListener('mousemove', function(e) {
-            const x = e.clientX / window.innerWidth;
-            const y = e.clientY / window.innerHeight;
-            document.querySelector('.bg-image').style.transform = `translate(${x * 10}px, ${y * 10}px)`;
-        });
-
-        let currentSlideIndex = 0;
-        const galleryItems = document.querySelectorAll('.gallery-item img, .gallery-item video');
-        const lightbox = document.getElementById('lightbox');
-        const lightboxContent = document.querySelector('.lightbox-content');
-        const lightboxCaption = document.querySelector('.lightbox-caption');
-
-        function openLightbox(index) {
-            currentSlideIndex = index;
+        function openLightboxFromElement(element) {
+            currentMedia = element;
+            currentIndex = galleryElements.indexOf(element);
             updateLightbox();
-            lightbox.classList.add('active');
-            document.body.style.overflow = 'hidden'; 
+            document.getElementById('lightbox').classList.add('active');
+            document.body.style.overflow = 'hidden';
         }
 
         function closeLightbox() {
-            lightbox.classList.remove('active');
-            document.body.style.overflow = ''; 
+            document.getElementById('lightbox').classList.remove('active');
+            document.body.style.overflow = '';
         }
-// gallery optmistiz
-        function changeSlide(direction) {
-            currentSlideIndex += direction;
-            
-           
-            if (currentSlideIndex >= galleryItems.length) {
-                currentSlideIndex = 0;
-            } else if (currentSlideIndex < 0) {
-                currentSlideIndex = galleryItems.length - 1;
-            }
-            
+
+        function navigateLightbox(direction) {
+            if (currentIndex === -1) return;
+            currentIndex = (currentIndex + direction + galleryElements.length) % galleryElements.length;
+            currentMedia = galleryElements[currentIndex];
             updateLightbox();
         }
-function updateLightbox() {
-    const item = galleryItems[currentSlideIndex];
-    const isVideo = item.tagName.toLowerCase() === 'video';
-    const dateElement = item.closest('.memory-container').querySelector('.memory-date');
-    const dateText = dateElement ? dateElement.textContent : '';
-    
-    
-    lightboxContent.innerHTML = '';
-    // for video
-    if (isVideo) {
-        const video = document.createElement('video');
-        video.controls = true;
-        video.autoplay = true;
-        const source = document.createElement('source');
-        source.src = item.querySelector('source').src;
-        source.type = 'video/mp4';
-        video.appendChild(source);
-        lightboxContent.appendChild(video);
-        lightboxCaption.textContent = dateText + (item.parentElement.getAttribute('data-caption') ? ' - ' + item.parentElement.getAttribute('data-caption') : '');
-    } else {
-        const img = document.createElement('img');
-        img.src = item.src;
-        img.alt = item.alt;
-        lightboxContent.appendChild(img);
-        lightboxCaption.textContent = dateText + (item.getAttribute('data-caption') ? ' - ' + item.getAttribute('data-caption') : '');
-    }
-}
 
-        
-        lightbox.addEventListener('click', function(e) {
-            if (e.target === lightbox) {
-                closeLightbox();
+        function updateLightbox() {
+            const lightboxContent = document.querySelector('.lightbox-content');
+            const lightboxCaption = document.querySelector('.lightbox-caption');
+
+            if (!currentMedia) return;
+
+            lightboxContent.innerHTML = '';
+
+            const isVideo = currentMedia.tagName.toLowerCase() === 'video';
+            const container = currentMedia.closest('.memory-container');
+            const dateText = container.querySelector('.memory-date')?.textContent || '';
+
+            if (isVideo) {
+                const video = document.createElement('video');
+                video.controls = true;
+                video.autoplay = true;
+                const source = document.createElement('source');
+                source.src = currentMedia.querySelector('source').src;
+                source.type = 'video/mp4';
+                video.appendChild(source);
+                lightboxContent.appendChild(video);
+            } else {
+                const img = document.createElement('img');
+                img.src = currentMedia.src;
+                img.alt = currentMedia.alt || 'Memory';
+                lightboxContent.appendChild(img);
             }
+
+            lightboxCaption.textContent = dateText;
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            showPage('home');
+            updateMemoryCounter();
+            bindGalleryItems();
         });
 
-       
         document.addEventListener('keydown', function(e) {
+            const lightbox = document.getElementById('lightbox');
             if (lightbox.classList.contains('active')) {
-                if (e.key === 'Escape') {
-                    closeLightbox();
-                } else if (e.key === 'ArrowLeft') {
-                    changeSlide(-1);
-                } else if (e.key === 'ArrowRight') {
-                    changeSlide(1);
-                }
+                if (e.key === 'Escape') closeLightbox();
+                else if (e.key === 'ArrowLeft') navigateLightbox(-1);
+                else if (e.key === 'ArrowRight') navigateLightbox(1);
             }
         });
-
-       function bindGalleryItems() {
-    const items = document.querySelectorAll('.gallery-item img, .gallery-item video');
-    galleryItems.length = 0; // clear existing
-    items.forEach(item => galleryItems.push(item));
-
-    document.querySelectorAll('.gallery-item').forEach((item, index) => {
-        item.onclick = () => openLightbox(index);
-    });
-}
-
-         const backgroundSong = document.getElementById('backgroundSong');
-
-        // songplayer
-        window.onload = () => {
-            backgroundSong.play();
-        };
-        function handleFirstInteraction() {
-        backgroundSong.muted = false;
-        backgroundSong.play().catch(e => console.log("Auto-play prevented:", e));
-        document.body.removeEventListener('click', handleFirstInteraction);
-        document.body.removeEventListener('touchstart', handleFirstInteraction);
-    }
-document.addEventListener('click', () => {
-  const audio = document.getElementById('backgroundSong');
-  audio.muted = false;
-  audio.play();
-});
-
-    // mobile responsiveness
-    document.body.addEventListener('click', handleFirstInteraction, { once: true });
-    document.body.addEventListener('touchstart', handleFirstInteraction, { once: true });
- // candle 
-    document.querySelector('.interactive-candle').addEventListener('click', function() {
-        this.classList.toggle('candle-lit');
-        
-        // heart anim
-        if (this.classList.contains('candle-lit')) {
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤';
-            heart.style.position = 'absolute';
-            heart.style.top = '0';
-            heart.style.left = '50%';
-            heart.style.transform = 'translateX(-50%)';
-            heart.style.fontSize = '1.5rem';
-            heart.style.animation = 'floatUp 3s ease-out forwards';
-            this.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.remove();
-            }, 3000);
-        }
-    });
-
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes floatUp {
-            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
-            100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
-
-    function updateMemoryCounter() {
-    const memoryItems = document.querySelectorAll('.gallery-item');
-    const memoryCount = memoryItems.length;
-
-    const counterEl = document.querySelector('.memory-stats .count');
-    counterEl.textContent = memoryCount;
-}
-
-// Ensure the counter updates once DOM is ready
-window.addEventListener('DOMContentLoaded', () => {
-    showPage('home');
-    updateMemoryCounter();
-    bindGalleryItems();
-});
-
     </script>
+
+   
 </body>
 </html>
