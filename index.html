@@ -275,102 +275,139 @@
     <footer>
         لونا... إنا لله وإنا إليه راجعون... كل شيء يرجع إلى الله، يا حبيبتي. أنا معك
     </footer>
+<script> 
+  let galleryElements = [];
+let currentIndex = -1;
 
-    <script>
-      
-          let galleryElements = [];
-        let currentMedia = null;
-        let currentIndex = -1;
 
-        function showPage(pageId) {
-            document.querySelectorAll('.page').forEach(page => {
-                page.classList.remove('active');
-            });
-            document.getElementById(pageId).classList.add('active');
-            window.scrollTo(0, 0);
-        }
+document.addEventListener('DOMContentLoaded', function() {
+    showPage('home');
+    updateMemoryCounter();
+    bindGalleryItems();
+    setupLightboxEvents();
+});
 
-        function updateMemoryCounter() {
-            const memoryItems = document.querySelectorAll('.gallery-item');
-            document.querySelector('.memory-stats .count').textContent = memoryItems.length;
-        }
 
-        function bindGalleryItems() {
-            galleryElements = [];
-            document.querySelectorAll('.gallery-item').forEach(item => {
-                const mediaEl = item.querySelector('img, video');
-                galleryElements.push(mediaEl);
-                item.onclick = () => openLightboxFromElement(mediaEl);
-            });
-        }
+function showPage(pageId) {
+    document.querySelectorAll('.page').forEach(page => {
+        page.classList.remove('active');
+    });
+    document.getElementById(pageId).classList.add('active');
+    window.scrollTo(0, 0);
+}
 
-        function openLightboxFromElement(element) {
-            currentMedia = element;
-            currentIndex = galleryElements.indexOf(element);
-            updateLightbox();
-            document.getElementById('lightbox').classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
+// memcunt
+function updateMemoryCounter() {
+    const memoryItems = document.querySelectorAll('.gallery-item');
+    document.querySelector('.memory-stats .count').textContent = memoryItems.length;
+}
 
-        function closeLightbox() {
-            document.getElementById('lightbox').classList.remove('active');
-            document.body.style.overflow = '';
-        }
+// bindshi
+function bindGalleryItems() {
+    galleryElements = Array.from(document.querySelectorAll('.gallery-item'));
+    galleryElements.forEach((item, index) => {
+        item.onclick = () => openLightbox(index);
+    });
+}
 
-        function navigateLightbox(direction) {
-            if (currentIndex === -1) return;
-            currentIndex = (currentIndex + direction + galleryElements.length) % galleryElements.length;
-            currentMedia = galleryElements[currentIndex];
-            updateLightbox();
-        }
-
-        function updateLightbox() {
-            const lightboxContent = document.querySelector('.lightbox-content');
-            const lightboxCaption = document.querySelector('.lightbox-caption');
-
-            if (!currentMedia) return;
-
-            lightboxContent.innerHTML = '';
-
-            const isVideo = currentMedia.tagName.toLowerCase() === 'video';
-            const container = currentMedia.closest('.memory-container');
-            const dateText = container.querySelector('.memory-date')?.textContent || '';
-
-            if (isVideo) {
-                const video = document.createElement('video');
-                video.controls = true;
-                video.autoplay = true;
-                const source = document.createElement('source');
-                source.src = currentMedia.querySelector('source').src;
-                source.type = 'video/mp4';
-                video.appendChild(source);
-                lightboxContent.appendChild(video);
-            } else {
-                const img = document.createElement('img');
-                img.src = currentMedia.src;
-                img.alt = currentMedia.alt || 'Memory';
-                lightboxContent.appendChild(img);
-            }
-
-            lightboxCaption.textContent = dateText;
-        }
-
-        document.addEventListener('DOMContentLoaded', () => {
-            showPage('home');
-            updateMemoryCounter();
-            bindGalleryItems();
-        });
-
-        document.addEventListener('keydown', function(e) {
-            const lightbox = document.getElementById('lightbox');
-            if (lightbox.classList.contains('active')) {
-                if (e.key === 'Escape') closeLightbox();
-                else if (e.key === 'ArrowLeft') navigateLightbox(-1);
-                else if (e.key === 'ArrowRight') navigateLightbox(1);
-            }
-        });
-    </script>
-
+// lightbox headache 
+function setupLightboxEvents() {
+    
+    document.querySelector('.lightbox-close').onclick = closeLightbox;
+    
    
+    document.querySelector('.lightbox-prev').onclick = () => navigateLightbox(-1);
+    document.querySelector('.lightbox-next').onclick = () => navigateLightbox(1);
+    
+    document.addEventListener('keydown', function(e) {
+        const lightbox = document.getElementById('lightbox');
+        if (!lightbox.classList.contains('active')) return;
+        
+        if (e.key === 'Escape') closeLightbox();
+        if (e.key === 'ArrowLeft') navigateLightbox(-1);
+        if (e.key === 'ArrowRight') navigateLightbox(1);
+    });
+    
+  
+    document.getElementById('lightbox').onclick = function(e) {
+        if (e.target === this) closeLightbox();
+    };
+}
+
+
+function openLightbox(index) {
+    currentIndex = index;
+    updateLightbox();
+    document.getElementById('lightbox').classList.add('active');
+    document.body.style.overflow = 'hidden';
+    showMemoryJourney();
+}
+
+
+function closeLightbox() {
+    document.getElementById('lightbox').classList.remove('active');
+    document.body.style.overflow = '';
+}
+
+
+function navigateLightbox(direction) {
+    if (currentIndex === -1) return;
+    
+    currentIndex = (currentIndex + direction + galleryElements.length) % galleryElements.length;
+    updateLightbox();
+    showMemoryJourney();
+}
+
+
+function updateLightbox() {
+    const lightboxContent = document.querySelector('.lightbox-content');
+    const lightboxCaption = document.querySelector('.lightbox-caption');
+    const currentItem = galleryElements[currentIndex];
+    
+    if (!currentItem) return;
+    
+    lightboxContent.innerHTML = '';
+    lightboxCaption.innerHTML = '';
+    
+    const media = currentItem.querySelector('img, video');
+    const dateEl = currentItem.querySelector('.memory-date');
+    const isVideo = media.tagName.toLowerCase() === 'video';
+    
+    if (isVideo) {
+        const video = document.createElement('video');
+        video.controls = true;
+        video.autoplay = true;
+        const source = document.createElement('source');
+        source.src = media.querySelector('source').src;
+        source.type = 'video/mp4';
+        video.appendChild(source);
+        lightboxContent.appendChild(video);
+    } else {
+        const img = document.createElement('img');
+        img.src = media.src;
+        img.alt = media.alt || 'Memory of Luna';
+        lightboxContent.appendChild(img);
+    }
+    
+    if (dateEl) {
+        lightboxCaption.textContent = dateEl.textContent;
+    }
+}
+
+
+function showMemoryJourney() {
+    const lightboxCaption = document.querySelector('.lightbox-caption');
+    const journeyEl = document.createElement('div');
+    journeyEl.className = 'memory-journey';
+    journeyEl.innerHTML = `
+        Memory ${currentIndex + 1} of ${galleryElements.length}
+        <div class="journey-bar">
+            <div style="width: ${(currentIndex + 1)/galleryElements.length*100}%"></div>
+        </div>
+    `;
+    lightboxCaption.appendChild(journeyEl);
+}
+
+   </script>
 </body>
 </html>
