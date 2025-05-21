@@ -407,7 +407,41 @@ function showMemoryJourney() {
     `;
     lightboxCaption.appendChild(journeyEl);
 }
+document.addEventListener('click', () => {
+  const audio = document.getElementById('bg-music');
+  audio.muted = false;
+  audio.play();
+});
+document.querySelector('.interactive-candle').addEventListener('click', function() {
+        this.classList.toggle('candle-lit');
+        
+        // Create floating heart animation
+        if (this.classList.contains('candle-lit')) {
+            const heart = document.createElement('div');
+            heart.innerHTML = '❤';
+            heart.style.position = 'absolute';
+            heart.style.top = '0';
+            heart.style.left = '50%';
+            heart.style.transform = 'translateX(-50%)';
+            heart.style.fontSize = '1.5rem';
+            heart.style.animation = 'floatUp 3s ease-out forwards';
+            this.appendChild(heart);
+            
+            setTimeout(() => {
+                heart.remove();
+            }, 3000);
+        }
+    });
 
+    // Animation for floating heart
+    const style = document.createElement('style');
+    style.innerHTML = `
+        @keyframes floatUp {
+            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+            100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+        }
+    `;
+    document.head.appendChild(style);
    </script>
 </body>
 </html>
