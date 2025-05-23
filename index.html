@@ -407,11 +407,23 @@ function showMemoryJourney() {
     `;
     lightboxCaption.appendChild(journeyEl);
 }
-document.addEventListener('click', () => {
-  const audio = document.getElementById('bg-music');
-  audio.muted = false;
-  audio.play();
+let bgMusicInitialized = false;
+
+function initBackgroundMusic() {
+    const audio = document.getElementById('backgroundSong');
+    if (!audio || bgMusicInitialized) return;
+    bgMusicInitialized = true;
+    audio.muted = false;
+    audio.play().catch((e) => {
+        console.warn("Autoplay failed:", e);
+    });
+}
+
+// One-time listener to play background music on first user interaction
+['click', 'keydown', 'touchstart'].forEach(event => {
+    window.addEventListener(event, initBackgroundMusic, { once: true });
 });
+
 document.querySelector('.interactive-candle').addEventListener('click', function() {
         this.classList.toggle('candle-lit');
         
