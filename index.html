@@ -427,29 +427,75 @@ style.innerHTML = `
 `;
 document.head.appendChild(style);
 
-// ✅ Background audio fix for Android & desktop browsers
+// Audio handling with better mobile support
 let bgMusicInitialized = false;
+const audio = document.getElementById('backgroundSong');
 
 function initBackgroundMusic() {
-    const audio = document.getElementById('backgroundSong');
-    if (!audio || bgMusicInitialized) return;
-
+    if (bgMusicInitialized) return;
     bgMusicInitialized = true;
-    audio.muted = false;
-
-    const playPromise = audio.play();
-    if (playPromise !== undefined) {
-        playPromise.then(() => {
-            console.log("Background music is playing.");
-        }).catch((error) => {
-            console.warn("Playback prevented:", error);
-        });
+    
+    try {
+        // Unmute and lower volume for better UX
+        audio.muted = false;
+        audio.volume = 0.5;
+        
+        // iOS/Android requires this promise chain
+        const playPromise = audio.play();
+        
+        if (playPromise !== undefined) {
+            playPromise.catch(error => {
+                // Auto-play was prevented, show play button
+                createFallbackAudioButton();
+            });
+        }
+    } catch (e) {
+        console.warn("Audio playback error:", e);
+        createFallbackAudioButton();
     }
 }
 
-// First interaction to trigger bg music
-['click', 'touchstart'].forEach(event => {
-    document.body.addEventListener(event, initBackgroundMusic, { once: true });
+function createFallbackAudioButton() {
+    const audioBtn = document.createElement('div');
+    audioBtn.innerHTML = '<i class="fas fa-music"></i> Play Memorial Music';
+    audioBtn.style.position = 'fixed';
+    audioBtn.style.bottom = '20px';
+    audioBtn.style.left = '50%';
+    audioBtn.style.transform = 'translateX(-50%)';
+    audioBtn.style.backgroundColor = 'rgba(44, 62, 80, 0.9)';
+    audioBtn.style.color = 'white';
+    audioBtn.style.padding = '10px 20px';
+    audioBtn.style.borderRadius = '30px';
+    audioBtn.style.zIndex = '1000';
+    audioBtn.style.cursor = 'pointer';
+    audioBtn.style.boxShadow = '0 2px 10px rgba(0,0,0,0.3)';
+    audioBtn.style.fontFamily = "'Montserrat', sans-serif";
+    audioBtn.style.fontSize = '0.9rem';
+    
+    audioBtn.onclick = () => {
+        audio.play().then(() => {
+            audioBtn.style.display = 'none';
+        }).catch(e => {
+            audioBtn.innerHTML = '<i class="fas fa-exclamation-circle"></i> Tap to enable audio';
+            console.error("Playback failed:", e);
+        });
+    };
+    
+    document.body.appendChild(audioBtn);
+}
+
+// Initialize on any user interaction
+['click', 'touchstart', 'keydown'].forEach(event => {
+    document.addEventListener(event, initBackgroundMusic, { 
+        once: true,
+        passive: true
+    });
+});
+
+// Also try initializing when page loads (works on some browsers)
+document.addEventListener('DOMContentLoaded', function() {
+    // Small timeout to help with some mobile browsers
+    setTimeout(initBackgroundMusic, 500);
 });
 </script>
 
