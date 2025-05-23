@@ -931,7 +931,7 @@
     pointer-events: all;
 }
 
-/* :)) */
+/* Journey indicator styling */
 .memory-journey {
     margin-top: 10px;
     font-size: 0.9rem;
@@ -950,4 +950,299 @@
     height: 100%;
     background: var(--accent-color);
     transition: width 0.3s ease;
+}
+/* ===== LIGHTBOX AESTHETICS ===== */
+#lightbox {
+    background: rgba(0,0,0,0.9);
+    backdrop-filter: blur(8px);
+    transition: opacity 0.3s ease, transform 0.3s ease;
+}
+
+.lightbox-content {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    max-width: 90vw;
+    max-height: 90vh;
+}
+
+.media-container {
+    position: relative;
+    min-width: 300px;
+    min-height: 200px;
+}
+
+.media-container.loading::before {
+    content: "";
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    border: 3px solid rgba(255,255,255,0.2);
+    border-top-color: var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    transform: translate(-50%, -50%);
+}
+
+@keyframes spin {
+    to { transform: translate(-50%, -50%) rotate(360deg); }
+}
+
+.lightbox-nav {
+    background: rgba(0,0,0,0.5);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: all 0.3s ease;
+}
+
+.lightbox-nav:hover {
+    background: rgba(0,0,0,0.8);
+    transform: scale(1.1);
+}
+
+.lightbox-close {
+    top: 20px;
+    right: 20px;
+    width: 40px;
+    height: 40px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 50%;
+    transition: all 0.3s ease;
+}
+
+.lightbox-close:hover {
+    background: rgba(235,87,87,0.8);
+    transform: rotate(90deg);
+}
+
+/* ===== MEMORY JOURNEY ===== */
+.memory-journey {
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.8);
+    text-align: center;
+}
+
+.journey-bar {
+    height: 3px;
+    background: rgba(255,255,255,0.1);
+    margin-top: 8px;
+    border-radius: 3px;
+    overflow: hidden;
+}
+
+.journey-progress {
+    height: 100%;
+    background: linear-gradient(to right, var(--accent-color), #ff9d00);
+    transition: width 0.5s ease;
+}
+
+/* ===== MEDIA STYLING ===== */
+.lightbox-content img,
+.lightbox-content video {
+    max-width: 100%;
+    max-height: 80vh;
+    display: block;
+    border-radius: 5px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.3);
+}
+
+.lightbox-caption {
+    background: rgba(0,0,0,0.7);
+    padding: 12px 20px;
+    border-radius: 5px;
+    margin-top: 15px;
+    text-align: center;
+    transition: opacity 0.3s ease;
+}
+/* ===== MUSEUM GALLERY STYLES ===== */
+.gallery-page {
+    background: #f5f1e8;
+    padding: 2rem;
+    color: #3a3226;
+}
+
+.museum-header {
+    text-align: center;
+    margin-bottom: 3rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #d4c9a8;
+}
+
+.gallery-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 2.5rem;
+    color: #2c3e50;
+    margin-bottom: 0.5rem;
+}
+
+.exhibition-info {
+    font-style: italic;
+    color: #7f8c8d;
+    letter-spacing: 1px;
+}
+
+.museum-wall {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 2rem;
+    padding: 2rem;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: inset 0 0 0 1px #e0d6c2, 
+                0 10px 30px rgba(0,0,0,0.05);
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 4px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    transition: all 0.4s ease;
+    background: #fff;
+    border: 1px solid #e8e0d0;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 15px 30px rgba(0,0,0,0.15);
+}
+
+.memory-container {
+    position: relative;
+}
+
+.memory-container::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(to bottom, 
+                rgba(0,0,0,0) 60%, 
+                rgba(0,0,0,0.4) 100%);
+    z-index: 1;
+}
+
+.gallery-item img, 
+.gallery-item video {
+    width: 100%;
+    height: 240px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.5s ease;
+}
+
+.gallery-item:hover img,
+.gallery-item:hover video {
+    transform: scale(1.03);
+}
+
+.memory-meta {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 1rem;
+    z-index: 2;
+    color: white;
+    background: linear-gradient(to top, rgba(0,0,0,0.7), transparent);
+}
+
+.memory-date {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+.museum-controls {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 3rem;
+    padding-top: 2rem;
+    border-top: 1px solid #d4c9a8;
+}
+
+.detail-card {
+    background: #2c3e50;
+    color: white;
+    padding: 0.8rem 1.5rem;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+/* ===== MUSEUM LIGHTBOX ===== */
+.lightbox {
+    background: rgba(0,0,0,0.95);
+    backdrop-filter: blur(10px);
+}
+
+.lightbox-container {
+    max-width: 90vw;
+    max-height: 90vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.lightbox-frame {
+    background: #fff;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 20px 50px rgba(0,0,0,0.5);
+    border: 15px solid #f5f1e8;
+    position: relative;
+}
+
+.lightbox-content {
+    max-width: 80vw;
+    max-height: 70vh;
+}
+
+.lightbox-plaque {
+    background: #2c3e50;
+    color: white;
+    padding: 1.5rem;
+    text-align: center;
+}
+
+.plaque-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    margin-bottom: 0.5rem;
+    color: #ecf0f1;
+}
+
+.lightbox-nav {
+    background: rgba(44, 62, 80, 0.9);
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    border: 2px solid #ecf0f1;
+}
+
+.lightbox-close {
+    top: 20px;
+    right: 20px;
+    background: rgba(235, 87, 87, 0.9);
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    border: none;
+}
+
+.memory-journey {
+    margin-top: 1rem;
+    font-size: 0.9rem;
+    color: #bdc3c7;
 }
