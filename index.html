@@ -14,10 +14,8 @@
   
 </head>
 <body>
-     <audio id="backgroundSong" loop muted>
-        <source src="goodbye.mp3"audio/mpeg">
-        Your browser does not support the audio element.
-    </audio>
+     <audio id="backgroundSong" src="goodbye.mp3" loop playsinline muted></audio>
+
 
     <!-- bg stuffz -->
     <div class="bg-container">
@@ -276,9 +274,8 @@
         لونا... إنا لله وإنا إليه راجعون... كل شيء يرجع إلى الله، يا حبيبتي. أنا معك
     </footer>
 <script> 
-  let galleryElements = [];
+let galleryElements = [];
 let currentIndex = -1;
-
 
 document.addEventListener('DOMContentLoaded', function() {
     showPage('home');
@@ -287,7 +284,7 @@ document.addEventListener('DOMContentLoaded', function() {
     setupLightboxEvents();
 });
 
-
+// Page switching
 function showPage(pageId) {
     document.querySelectorAll('.page').forEach(page => {
         page.classList.remove('active');
@@ -296,13 +293,13 @@ function showPage(pageId) {
     window.scrollTo(0, 0);
 }
 
-// memcunt
+// Memory counter
 function updateMemoryCounter() {
     const memoryItems = document.querySelectorAll('.gallery-item');
     document.querySelector('.memory-stats .count').textContent = memoryItems.length;
 }
 
-// bindshi
+// Gallery binding
 function bindGalleryItems() {
     galleryElements = Array.from(document.querySelectorAll('.gallery-item'));
     galleryElements.forEach((item, index) => {
@@ -310,30 +307,25 @@ function bindGalleryItems() {
     });
 }
 
-// lightbox headache 
+// Lightbox navigation and interaction
 function setupLightboxEvents() {
-    
     document.querySelector('.lightbox-close').onclick = closeLightbox;
-    
-   
     document.querySelector('.lightbox-prev').onclick = () => navigateLightbox(-1);
     document.querySelector('.lightbox-next').onclick = () => navigateLightbox(1);
-    
+
     document.addEventListener('keydown', function(e) {
         const lightbox = document.getElementById('lightbox');
         if (!lightbox.classList.contains('active')) return;
-        
+
         if (e.key === 'Escape') closeLightbox();
         if (e.key === 'ArrowLeft') navigateLightbox(-1);
         if (e.key === 'ArrowRight') navigateLightbox(1);
     });
-    
-  
+
     document.getElementById('lightbox').onclick = function(e) {
         if (e.target === this) closeLightbox();
     };
 }
-
 
 function openLightbox(index) {
     currentIndex = index;
@@ -343,36 +335,33 @@ function openLightbox(index) {
     showMemoryJourney();
 }
 
-
 function closeLightbox() {
     document.getElementById('lightbox').classList.remove('active');
     document.body.style.overflow = '';
 }
 
-
 function navigateLightbox(direction) {
     if (currentIndex === -1) return;
-    
+
     currentIndex = (currentIndex + direction + galleryElements.length) % galleryElements.length;
     updateLightbox();
     showMemoryJourney();
 }
 
-
 function updateLightbox() {
     const lightboxContent = document.querySelector('.lightbox-content');
     const lightboxCaption = document.querySelector('.lightbox-caption');
     const currentItem = galleryElements[currentIndex];
-    
+
     if (!currentItem) return;
-    
+
     lightboxContent.innerHTML = '';
     lightboxCaption.innerHTML = '';
-    
+
     const media = currentItem.querySelector('img, video');
     const dateEl = currentItem.querySelector('.memory-date');
     const isVideo = media.tagName.toLowerCase() === 'video';
-    
+
     if (isVideo) {
         const video = document.createElement('video');
         video.controls = true;
@@ -388,12 +377,11 @@ function updateLightbox() {
         img.alt = media.alt || 'Memory of Luna';
         lightboxContent.appendChild(img);
     }
-    
+
     if (dateEl) {
         lightboxCaption.textContent = dateEl.textContent;
     }
 }
-
 
 function showMemoryJourney() {
     const lightboxCaption = document.querySelector('.lightbox-caption');
@@ -407,53 +395,62 @@ function showMemoryJourney() {
     `;
     lightboxCaption.appendChild(journeyEl);
 }
+
+// Interactive candle
+document.querySelector('.interactive-candle').addEventListener('click', function() {
+    this.classList.toggle('candle-lit');
+
+    if (this.classList.contains('candle-lit')) {
+        const heart = document.createElement('div');
+        heart.innerHTML = '❤';
+        heart.style.position = 'absolute';
+        heart.style.top = '0';
+        heart.style.left = '50%';
+        heart.style.transform = 'translateX(-50%)';
+        heart.style.fontSize = '1.5rem';
+        heart.style.animation = 'floatUp 3s ease-out forwards';
+        this.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 3000);
+    }
+});
+
+// Floating heart animation
+const style = document.createElement('style');
+style.innerHTML = `
+    @keyframes floatUp {
+        0% { transform: translateX(-50%) translateY(0); opacity: 1; }
+        100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
+    }
+`;
+document.head.appendChild(style);
+
+// ✅ Background audio fix for Android & desktop browsers
 let bgMusicInitialized = false;
 
 function initBackgroundMusic() {
     const audio = document.getElementById('backgroundSong');
     if (!audio || bgMusicInitialized) return;
+
     bgMusicInitialized = true;
     audio.muted = false;
-    audio.play().catch((e) => {
-        console.warn("Autoplay failed:", e);
-    });
+
+    const playPromise = audio.play();
+    if (playPromise !== undefined) {
+        playPromise.then(() => {
+            console.log("Background music is playing.");
+        }).catch((error) => {
+            console.warn("Playback prevented:", error);
+        });
+    }
 }
 
-// One-time listener to play background music on first user interaction
-['click', 'keydown', 'touchstart'].forEach(event => {
-    window.addEventListener(event, initBackgroundMusic, { once: true });
+// First interaction to trigger bg music
+['click', 'touchstart'].forEach(event => {
+    document.body.addEventListener(event, initBackgroundMusic, { once: true });
 });
+</script>
 
-document.querySelector('.interactive-candle').addEventListener('click', function() {
-        this.classList.toggle('candle-lit');
-        
-        // Create floating heart animation
-        if (this.classList.contains('candle-lit')) {
-            const heart = document.createElement('div');
-            heart.innerHTML = '❤';
-            heart.style.position = 'absolute';
-            heart.style.top = '0';
-            heart.style.left = '50%';
-            heart.style.transform = 'translateX(-50%)';
-            heart.style.fontSize = '1.5rem';
-            heart.style.animation = 'floatUp 3s ease-out forwards';
-            this.appendChild(heart);
-            
-            setTimeout(() => {
-                heart.remove();
-            }, 3000);
-        }
-    });
-
-    // Animation for floating heart
-    const style = document.createElement('style');
-    style.innerHTML = `
-        @keyframes floatUp {
-            0% { transform: translateX(-50%) translateY(0); opacity: 1; }
-            100% { transform: translateX(-50%) translateY(-100px); opacity: 0; }
-        }
-    `;
-    document.head.appendChild(style);
-   </script>
-</body>
 </html>
